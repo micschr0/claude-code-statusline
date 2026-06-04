@@ -30,44 +30,30 @@ hidden until it passes 50 % used, so it surfaces only when it actually
 constrains you. Both rate-limit windows appear only for Claude.ai Pro/Max
 subscribers (API-key sessions omit them).
 
-## Prerequisites
-
-- [Claude Code](https://docs.anthropic.com/claude-code) CLI, installed and authenticated
-- A [Nerd Font](https://www.nerdfonts.com/) or Powerline-patched font in your terminal (for ` ` branch symbol and `` separator)
-- `jq` — JSON processor (`brew install jq` / `apt install jq`)
-- `bash` 3.2+ and standard utilities: `git`, `awk`, `date`
-
 ## Installation
 
-1. Clone or download the script:
+**Easy way:** Copy the [installation prompt](INSTALL.prompt) and give it to Claude Code. Claude will handle the download, setup, and configuration.
 
-   ```bash
-   git clone https://github.com/micschr0/claude-code-statusline.git
-   cd claude-code-statusline
-   chmod +x statusline-command.sh
-   ```
+**Manual way:** 
 
-2. Copy (or symlink) it wherever you keep scripts:
+```bash
+chmod +x statusline-command.sh
+cp statusline-command.sh ~/.claude/statusline-command.sh
 
-   ```bash
-   # example — adjust the path to suit your setup
-   cp statusline-command.sh ~/.local/bin/claude-statusline
-   chmod +x ~/.local/bin/claude-statusline
-   ```
+# Then add this to ~/.claude/settings.json:
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
+}
+```
 
-3. Register it in your Claude Code settings:
+## Requirements
 
-   ```jsonc
-   // ~/.claude/settings.json
-   {
-     "statusLine": {
-       "type": "command",
-       "command": "/path/to/statusline-command.sh"
-     }
-   }
-   ```
-
-4. Start (or restart) a Claude Code session. The status bar appears immediately.
+- [Claude Code](https://docs.anthropic.com/claude-code) CLI, installed and authenticated
+- `bash` 3.2+ and standard utilities: `jq`, `git`, `awk`, `date`
+- A [Nerd Font](https://www.nerdfonts.com/) or Powerline-patched font (optional — glyphs fall back to ASCII)
 
 ## Customization
 
