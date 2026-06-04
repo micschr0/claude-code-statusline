@@ -2,6 +2,42 @@
   <defs>
     <style>
       @font-face { font-family: "NF"; src: url("data:font/woff2;base64,d09GMgABAAAAAAJUAAsAAAAABGAAAAIJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgQQRCAqDIIJuATYCJAMMCwwABCAFZAcgG2MDYB6HsWP6hTPTJXcImsQDn87yjzTyk7UHQBVRR4CWjxCStEAV9wDUordLmfYuzdYm+x/v2/P/3RQ9PLxr0Aeg1ni+lkWHvSjkwHo+FkgvDajAAwl7N5Wa5bLVt/EOMRfuychGZS8Seo0bp38ok3YksioA7RABC8tpW8OHf75HpXyGShleQgBAHwERKQYgYqpUwACpAlNFfRBFgStVXd17vgBagImAuK0qELT2HyTROl0DSbXOej+RiPCcBGSgQAucxAeACAhSUazELjEOj7HIsuzk8aUnTi47fqJ6coc2oVDc+NXxc781nbz5Rzh5/veiCMdaxdYn21Xb10IRMnGhOFkqNKFUUTZpCiBVmsFwEXYV9go7on3cWovtsnp5vNyatD1RT9skK1paunzMSLN/eaMVizuYPceW2/X2t6s22sJk5PffD/++UVt+9Ohy2ROS0u2QqX1fWVoPTmx5e9CRN/j060ajefXly6ubG43Gn43uvfU/Af3771s1XZ/4vv70BXbraz4xrb+A1baRXQ/YbV+9sHnff0dXAwGBli9vfbyh9dj/82oOft3y4xlonjEo55lcpUQuAYEP1SUHefsBCDlTk1Kd8IKAzFgRBD6UGigVYlUwmEBMtDL4zGgwljhut8322uWgPuarOWCrPqbba49D+pgnX9xrsZq6w3bZ5IAUeB6UjwA=") format("woff2"); }
+      @keyframes show-normal {
+        0%         { opacity: 0 }
+        0.000% { opacity: 0 }
+        0.000%         { opacity: 1 }
+        22.500%  { opacity: 1 }
+        25.000%        { opacity: 0 }
+        100%        { opacity: 0 }
+      }
+      .sl-normal { opacity: 0; animation: show-normal 16.0s ease-in-out infinite; }
+      @keyframes show-warning {
+        0%         { opacity: 0 }
+        22.500% { opacity: 0 }
+        25.000%         { opacity: 1 }
+        47.500%  { opacity: 1 }
+        50.000%        { opacity: 0 }
+        100%        { opacity: 0 }
+      }
+      .sl-warning { opacity: 0; animation: show-warning 16.0s ease-in-out infinite; }
+      @keyframes show-critical {
+        0%         { opacity: 0 }
+        47.500% { opacity: 0 }
+        50.000%         { opacity: 1 }
+        72.500%  { opacity: 1 }
+        75.000%        { opacity: 0 }
+        100%        { opacity: 0 }
+      }
+      .sl-critical { opacity: 0; animation: show-critical 16.0s ease-in-out infinite; }
+      @keyframes show-overlimit {
+        0%         { opacity: 0 }
+        72.500% { opacity: 0 }
+        75.000%         { opacity: 1 }
+        97.500%  { opacity: 1 }
+        100.000%        { opacity: 0 }
+        100%        { opacity: 0 }
+      }
+      .sl-overlimit { opacity: 0; animation: show-overlimit 16.0s ease-in-out infinite; }
     </style>
     <clipPath id="win"><rect width="820" height="363" rx="10"/></clipPath>
   </defs>
@@ -25,6 +61,13 @@
     <text x="20" y="321" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#c0caf5">All 14 tests pass. Set </tspan><tspan fill="#e0af68">JWT_SECRET</tspan><tspan fill="#c0caf5"> env var before deploying.</tspan></text>
     <rect x="0" y="325" width="820" height="1" fill="#33344a"/>
     <rect x="0" y="326" width="820" height="34" fill="#13141f"/>
-    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰍛 </tspan><tspan fill="#ffd75f">━━━━╌╌ 67%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 64.2k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#87d787">━━╌╌╌╌ 45%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">2h20m</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
+    <text x="800" y="338" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11.5" fill="#565f89" class="sl-normal">Normal — all good</text>
+    <text x="800" y="338" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11.5" fill="#565f89" class="sl-warning">Warning — context filling up</text>
+    <text x="800" y="338" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11.5" fill="#565f89" class="sl-critical">Critical — rate limit approaching</text>
+    <text x="800" y="338" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11.5" fill="#565f89" class="sl-overlimit">Over limit — context bar hidden</text>
+    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve" class="sl-normal"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰍛 </tspan><tspan fill="#ffd75f">━━━━╌╌ 67%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 64.2k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#87d787">━━╌╌╌╌ 38%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">3h20m</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
+    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve" class="sl-warning"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰍛 </tspan><tspan fill="#ffd75f">━━━━╌╌ 72%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 108.0k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#ffd75f">━━━╌╌╌ 62%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">1h45m</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
+    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve" class="sl-critical"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰍛 </tspan><tspan fill="#ff5f5f">━━━━━╌ 88%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 166.0k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#ff5f5f">━━━━╌╌ 80%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">45m0s</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
+    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve" class="sl-overlimit"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 168.0k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#ff5f5f">━━━━━╌ 93%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">15m0s</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
   </g>
 </svg>
