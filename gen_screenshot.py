@@ -6,9 +6,6 @@ SCRIPT   = "/home/claude/projects/claude-code-statusline/statusline-command.sh"
 OUT      = "/home/claude/projects/claude-code-statusline/screenshot.svg"
 DEMO_CWD = "/tmp/demo-app"
 
-NF_WOFF2_B64 = (
-    "d09GMgABAAAAAAJUAAsAAAAABGAAAAIJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgQQRCAqDIIJuATYCJAMMCwwABCAFZAcgG2MDYB6HsWP6hTPTJXcImsQDn87yjzTyk7UHQBVRR4CWjxCStEAV9wDUordLmfYuzdYm+x/v2/P/3RQ9PLxr0Aeg1ni+lkWHvSjkwHo+FkgvDajAAwl7N5Wa5bLVt/EOMRfuychGZS8Seo0bp38ok3YksioA7RABC8tpW8OHf75HpXyGShleQgBAHwERKQYgYqpUwACpAlNFfRBFgStVXd17vgBagImAuK0qELT2HyTROl0DSbXOej+RiPCcBGSgQAucxAeACAhSUazELjEOj7HIsuzk8aUnTi47fqJ6coc2oVDc+NXxc781nbz5Rzh5/veiCMdaxdYn21Xb10IRMnGhOFkqNKFUUTZpCiBVmsFwEXYV9go7on3cWovtsnp5vNyatD1RT9skK1paunzMSLN/eaMVizuYPceW2/X2t6s22sJk5PffD/++UVt+9Ohy2ROS0u2QqX1fWVoPTmx5e9CRN/j060ajefXly6ubG43Gn43uvfU/Af3771s1XZ/4vv70BXbraz4xrb+A1baRXQ/YbV+9sHnff0dXAwGBli9vfbyh9dj/82oOft3y4xlonjEo55lcpUQuAYEP1SUHefsBCDlTk1Kd8IKAzFgRBD6UGigVYlUwmEBMtDL4zGgwljhut8322uWgPuarOWCrPqbba49D+pgnX9xrsZq6w3bZ5IAUeB6UjwA="
-)
 
 # Layout
 W          = 820
@@ -35,7 +32,7 @@ C = {
 
 FONT_CONTENT = ("font-family=\"'SF Mono','Menlo','JetBrains Mono','Courier New',monospace\""
                 " font-size=\"13\"")
-FONT_SL      = ("font-family=\"NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace\""
+FONT_SL      = ("font-family=\"'Noto Sans Mono','SF Mono','Menlo','JetBrains Mono','Courier New',monospace\""
                 " font-size=\"13\"")
 FONT_TITLE   = ("font-family=\"-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif\""
                 " font-size=\"11.5\"")
@@ -167,9 +164,7 @@ out.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{TOTAL_
 out.append(f'  <defs>')
 
 # CSS: font-face + keyframe animations per state
-css_lines = [
-    f'@font-face {{ font-family: "NF"; src: url("data:font/woff2;base64,{NF_WOFF2_B64}") format("woff2"); }}',
-]
+css_lines = []
 for i, (label, _) in enumerate(state_spans):
     kf = keyframes_for_state(i)
     css_lines.append(f'@keyframes show-{label} {{\n        {kf}\n      }}')
