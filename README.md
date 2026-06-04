@@ -4,6 +4,10 @@ Powerline status bar for Claude Code. Shows context usage, rate limits, git stat
 
 ![screenshot](screenshot.png)
 
+![critical and weekly rate limit](screenshot_critical.png)
+
+![over context limit](screenshot_overlimit.png)
+
 ## Install
 
 Copy this prompt and give it to Claude Code:
