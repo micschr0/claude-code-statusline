@@ -2,7 +2,7 @@
 
 Powerline status bar for Claude Code. Shows context usage, rate limits, git state, and model.
 
-![screenshot](screenshot.svg)
+![screenshot](screenshot.png)
 
 ## Install
 
