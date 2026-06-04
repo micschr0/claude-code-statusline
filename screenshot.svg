@@ -1,48 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="363" viewBox="0 0 820 363">
   <defs>
     <style>
-      text { font-family: "Courier New", "SF Mono", monospace; }
+      @font-face { font-family: "NF"; src: url("data:font/woff2;base64,d09GMgABAAAAAAJUAAsAAAAABGAAAAIJAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgQQRCAqDIIJuATYCJAMMCwwABCAFZAcgG2MDYB6HsWP6hTPTJXcImsQDn87yjzTyk7UHQBVRR4CWjxCStEAV9wDUordLmfYuzdYm+x/v2/P/3RQ9PLxr0Aeg1ni+lkWHvSjkwHo+FkgvDajAAwl7N5Wa5bLVt/EOMRfuychGZS8Seo0bp38ok3YksioA7RABC8tpW8OHf75HpXyGShleQgBAHwERKQYgYqpUwACpAlNFfRBFgStVXd17vgBagImAuK0qELT2HyTROl0DSbXOej+RiPCcBGSgQAucxAeACAhSUazELjEOj7HIsuzk8aUnTi47fqJ6coc2oVDc+NXxc781nbz5Rzh5/veiCMdaxdYn21Xb10IRMnGhOFkqNKFUUTZpCiBVmsFwEXYV9go7on3cWovtsnp5vNyatD1RT9skK1paunzMSLN/eaMVizuYPceW2/X2t6s22sJk5PffD/++UVt+9Ohy2ROS0u2QqX1fWVoPTmx5e9CRN/j060ajefXly6ubG43Gn43uvfU/Af3771s1XZ/4vv70BXbraz4xrb+A1baRXQ/YbV+9sHnff0dXAwGBli9vfbyh9dj/82oOft3y4xlonjEo55lcpUQuAYEP1SUHefsBCDlTk1Kd8IKAzFgRBD6UGigVYlUwmEBMtDL4zGgwljhut8322uWgPuarOWCrPqbba49D+pgnX9xrsZq6w3bZ5IAUeB6UjwA=") format("woff2"); }
     </style>
+    <clipPath id="win"><rect width="820" height="363" rx="10"/></clipPath>
   </defs>
-
-  <rect width="100%" height="100%" fill="#16161e"/>
-
-  <g id="state1">
-    <text x="20" y="35" font-size="13" font-weight="bold" fill="#a9b1d6">Normal Usage</text>
-    <text x="20" y="53" font-size="10" fill="#565f89">(65% context, 45% rate limit)</text>
-    <rect x="20" y="65" width="1160" height="60" fill="#1a1b26" stroke="#3b4261" stroke-width="1" rx="4"/>
-    <text x="30" y="90" font-size="11" fill="#7ba3ff">~/p/claude-code-statusline</text>
-    <text x="280" y="90" font-size="11" fill="#565f89">󰍛</text>
-    <text x="298" y="90" font-size="11" fill="#ffcc88">━━━╌╌╌ 65%</text>
-    <text x="395" y="90" font-size="11" fill="#7aa2f7">⬡ 165.0k</text>
-    <text x="502" y="90" font-size="11" fill="#565f89">󰔟</text>
-    <text x="520" y="90" font-size="11" fill="#89dd94">━━╌╌╌╌ 45%</text>
-    <text x="636" y="90" font-size="11" fill="#ff9e64">◈ Claude Sonnet 4.6</text>
+  <rect width="820" height="363" rx="10" fill="#2a2b3d"/>
+  <g clip-path="url(#win)">
+    <rect width="820" height="363" fill="#1a1b2e"/>
+    <rect width="820" height="38" fill="#1f2035"/>
+    <rect y="37" width="820" height="1" fill="#16172a"/>
+    <circle cx="20" cy="19" r="6" fill="#ff5f57"/>
+    <circle cx="40" cy="19" r="6" fill="#febc2e"/>
+    <circle cx="60" cy="19" r="6" fill="#28c840"/>
+    <text x="410" y="23" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="11.5" fill="#8a8a8a">claude — /tmp/demo-app</text>
+    <text x="20" y="69" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#bb9af7">❯ </tspan><tspan fill="#565f89"># refactor auth middleware to use JWT validation</tspan></text>
+    <text x="20" y="111" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#9ece6a">⏺ </tspan><tspan fill="#8a8a8a">Read</tspan><tspan fill="#565f89">(src/auth.rs)</tspan></text>
+    <text x="20" y="132" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#9ece6a">⏺ </tspan><tspan fill="#8a8a8a">Read</tspan><tspan fill="#565f89">(src/config/jwt.rs)</tspan></text>
+    <text x="20" y="174" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#c0caf5">Replacing DB-backed session validation with stateless JWT verification.</tspan></text>
+    <text x="20" y="195" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#c0caf5">DB lookup is kept only for token revocation checks.</tspan></text>
+    <text x="20" y="237" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#9ece6a">⏺ </tspan><tspan fill="#8a8a8a">Edit</tspan><tspan fill="#565f89">(src/auth.rs) </tspan><tspan fill="#8a8a8a">+47 -23</tspan></text>
+    <text x="20" y="258" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#9ece6a">⏺ </tspan><tspan fill="#8a8a8a">Edit</tspan><tspan fill="#565f89">(src/config/jwt.rs) </tspan><tspan fill="#8a8a8a">+12 -4</tspan></text>
+    <text x="20" y="279" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#9ece6a">⏺ </tspan><tspan fill="#8a8a8a">Bash</tspan><tspan fill="#565f89">(cargo test middleware -- --nocapture)</tspan></text>
+    <text x="20" y="321" font-family="'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13"><tspan fill="#c0caf5">All 14 tests pass. Set </tspan><tspan fill="#e0af68">JWT_SECRET</tspan><tspan fill="#c0caf5"> env var before deploying.</tspan></text>
+    <rect x="0" y="325" width="820" height="1" fill="#33344a"/>
+    <rect x="0" y="326" width="820" height="34" fill="#13141f"/>
+    <text x="20" y="351" font-family="NF,'SF Mono','Menlo','JetBrains Mono','Courier New',monospace" font-size="13" xml:space="preserve"><tspan fill="#0087ff"> /t/demo-app</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#af87ff"> main</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d787">↑2</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ffd75f">M1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">?1</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰍛 </tspan><tspan fill="#ffd75f">━━━━╌╌ 67%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#87d7ff">⬡ 64.2k</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">󰔟 </tspan><tspan fill="#87d787">━━╌╌╌╌ 45%</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#8a8a8a">↺</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#5fafaf">2h20m</tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#444444"></tspan><tspan fill="#a9b1d6"> </tspan><tspan fill="#ff8700">◈ Claude Sonnet 4.6</tspan></text>
   </g>
-
-  <g id="state2" transform="translate(0, 140)">
-    <text x="20" y="35" font-size="13" font-weight="bold" fill="#a9b1d6">High Usage (Warning)</text>
-    <text x="20" y="53" font-size="10" fill="#565f89">(80% context, 60% rate limit)</text>
-    <rect x="20" y="65" width="1160" height="60" fill="#1a1b26" stroke="#3b4261" stroke-width="1" rx="4"/>
-    <text x="30" y="90" font-size="11" fill="#7ba3ff">~/p/claude-code-statusline</text>
-    <text x="280" y="90" font-size="11" fill="#565f89">󰍛</text>
-    <text x="298" y="90" font-size="11" fill="#ffaa44">━━━━╌╌ 80%</text>
-    <text x="395" y="90" font-size="11" fill="#7aa2f7">⬡ 180.0k</text>
-    <text x="502" y="90" font-size="11" fill="#565f89">󰔟</text>
-    <text x="520" y="90" font-size="11" fill="#ffcc88">━━━━╌╌ 60%</text>
-    <text x="636" y="90" font-size="11" fill="#ff9e64">◈ Claude Sonnet 4.6</text>
-  </g>
-
-  <g id="state3" transform="translate(0, 280)">
-    <text x="20" y="35" font-size="13" font-weight="bold" fill="#a9b1d6">Over Limit (Critical)</text>
-    <text x="20" y="53" font-size="10" fill="#565f89">(101% context, 85% rate limit)</text>
-    <rect x="20" y="65" width="1160" height="60" fill="#1a1b26" stroke="#3b4261" stroke-width="1" rx="4"/>
-    <text x="30" y="90" font-size="11" fill="#7ba3ff">~/p/claude-code-statusline</text>
-    <text x="280" y="90" font-size="11" fill="#7aa2f7">⬡ 202.5k</text>
-    <text x="387" y="90" font-size="11" fill="#565f89">󰔟</text>
-    <text x="405" y="90" font-size="11" fill="#f7768e">━━━━━━╌ 85%</text>
-    <text x="521" y="90" font-size="11" fill="#ff9e64">◈ Claude Sonnet 4.6</text>
-  </g>
-
-  <text x="20" y="410" font-size="9" fill="#565f89">Dark mode • Tokyo Night • Bash 3.2+ • Zero dependencies • Runs on every Claude Code turn</text>
 </svg>
