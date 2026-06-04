@@ -1,0 +1,6 @@
+# Local-only Claude Code project context — intentionally kept out of the
+# public repo. Claude Code still reads it from disk on every session.
+CLAUDE.md
+
+# OS / editor cruft
+.DS_Store
