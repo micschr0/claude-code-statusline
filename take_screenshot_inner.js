@@ -6,7 +6,7 @@ const { chromium } = require("/node_modules/playwright-core");
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   });
   const page = await browser.newPage();
-  await page.setViewportSize({ width: 964, height: 800 });
+  await page.setViewportSize({ width: 1200, height: 800 });
   console.log("Loading HTML...");
   await page.goto("file:///work/screenshot_src.html");
   await page.waitForTimeout(2000);
@@ -14,7 +14,7 @@ const { chromium } = require("/node_modules/playwright-core");
   console.log("Page height:", height);
   await page.screenshot({
     path: "/work/screenshot.png",
-    clip: { x: 0, y: 0, width: 964, height },
+    clip: { x: 0, y: 0, width: 1200, height },
   });
   await browser.close();
   console.log("Screenshot saved.");

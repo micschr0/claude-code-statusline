@@ -13,11 +13,11 @@ const { chromium } = require("/node_modules/playwright-core");
 
   for (const { src, out } of shots) {
     const page = await browser.newPage();
-    await page.setViewportSize({ width: 964, height: 800 });
+    await page.setViewportSize({ width: 1200, height: 800 });
     await page.goto(src);
     await page.waitForTimeout(1500);
     const height = await page.evaluate(() => document.body.scrollHeight);
-    await page.screenshot({ path: out, clip: { x: 0, y: 0, width: 964, height } });
+    await page.screenshot({ path: out, clip: { x: 0, y: 0, width: 1200, height } });
     await page.close();
     console.log("Saved:", out, `(${height}px)`);
   }
