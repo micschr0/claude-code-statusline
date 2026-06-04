@@ -5,5 +5,4 @@ CLAUDE.md
 # OS / editor cruft
 .DS_Store
 
-# Generated screenshot source (rebuilt by gen_screenshot.py / take_screenshot.sh)
-screenshot_src.html
+# HTML screenshot sources are generated to /tmp/ at runtime — never in repo
