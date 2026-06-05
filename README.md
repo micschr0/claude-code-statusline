@@ -4,6 +4,14 @@ Powerline status bar for Claude Code. Shows context usage, rate limits, git stat
 
 ![screenshot](screenshots/normal.png)
 
+## Requirements
+
+- **bash** (3.2+)
+- **jq**
+- **git**
+- **awk**
+- **Nerd Font** (patched terminal font for Powerline symbols)
+
 ![critical and weekly rate limit](screenshots/critical.png)
 
 ![over context limit](screenshots/overlimit.png)
@@ -48,6 +56,17 @@ The statusline script is at: https://github.com/micschr0/claude-code-statusline/
 5. Remind to restart Claude Code for changes to take effect
 
 If the audit reveals any issues, stop and explain what needs review before proceeding.
+```
+
+Once installed, configure `~/.claude/settings.json`:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
+}
 ```
 
 ## License

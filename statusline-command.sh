@@ -48,7 +48,7 @@ make_bar() {
   local bar=""
   for (( i=0; i<filled; i++ )); do bar="${bar}━"; done
   for (( i=0; i<empty;  i++ )); do bar="${bar}╌"; done
-  echo "$bar"
+  printf '%s\n' "$bar"
 }
 
 # fmt_reset <epoch> — adaptive time until reset (Nd Nh / Nh Nm / Nm Ns / Ns);
@@ -112,8 +112,11 @@ if [[ "$cwd" == /* ]]; then
     [[ "$ahead"  =~ ^[0-9]+$ ]] && [ "$ahead"  -gt 0 ] && printf " ${C_AHD}↑%s${R}" "$ahead"
     [[ "$behind" =~ ^[0-9]+$ ]] && [ "$behind" -gt 0 ] && printf " ${C_BHD}↓%s${R}" "$behind"
     git_st=$(git -C "$cwd" -c gc.auto=0 status --porcelain 2>/dev/null)
-    n_mod=$(printf '%s\n' "$git_st" | grep -c '^[^?]' 2>/dev/null); n_mod=${n_mod:-0}
-    n_new=$(printf '%s\n' "$git_st" | grep -c '^??' 2>/dev/null);  n_new=${n_new:-0}
+    n_mod=0; n_new=0
+    if [ -n "$git_st" ]; then
+      n_mod=$(printf '%s\n' "$git_st" | grep -c '^[^?]' 2>/dev/null); n_mod=${n_mod:-0}
+      n_new=$(printf '%s\n' "$git_st" | grep -c '^??' 2>/dev/null);  n_new=${n_new:-0}
+    fi
     [ "$n_mod" -gt 0 ] && printf " ${C_WARN}M%s${R}" "$n_mod"
     [ "$n_new" -gt 0 ] && printf " ${C_DIM}?%s${R}" "$n_new"
   fi
@@ -128,9 +131,10 @@ if [ "$s_in" -gt 0 ] 2>/dev/null || [ "$s_out" -gt 0 ] 2>/dev/null; then
   if [[ "$used" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
     pct=$(printf '%.0f' "$used")
     # numeric pre-check above guarantees a real number; range-gate below
-    if [ "$pct" -ge 0 ] && [ "$pct" -le 100 ] 2>/dev/null; then
-      if   [ "$pct" -ge 80 ]; then cc="$C_CRIT"
-      elif [ "$pct" -ge 50 ]; then cc="$C_WARN"
+    if [ "$pct" -ge 0 ] && [ "$pct" -le 999 ] 2>/dev/null; then
+      if   [ "$pct" -gt 100 ]; then cc="$C_CRIT"
+      elif [ "$pct" -ge 80 ];  then cc="$C_CRIT"
+      elif [ "$pct" -ge 50 ];  then cc="$C_WARN"
       else cc="$C_OK"; fi
       bar=$(make_bar "$pct" 6)
       printf "${SEP}${C_DIM}󰍛 ${cc}%s %d%%${R} ${C_TOK}⬡ %s${R}" "$bar" "$pct" "$fmt"
