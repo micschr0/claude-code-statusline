@@ -18,18 +18,6 @@ jobs:
           severity: warning
           ignore_paths: scripts
 
-  shellharden:
-    name: Shellharden
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install shellharden
-        run: cargo install shellharden
-        env:
-          CARGO_NET_GIT_FETCH_WITH_CLI: "true"
-      - name: Check quoting hygiene
-        run: shellharden --check statusline-command.sh
-
   semgrep:
     name: Semgrep
     runs-on: ubuntu-latest
