@@ -181,6 +181,7 @@ fi
 
 # ── Model + Effort (trailing — low-volatility metadata) ──────────────────────
 model_name=${model_name//[$CTRL]/}   # strip terminal-control bytes (ANSI/OSC injection guard)
+effort_level=${effort_level//[$CTRL]/}
 if [ -n "$model_name" ] || [ -n "$effort_level" ]; then
   printf '%s' "$SEP"
   [ -n "$model_name" ] && printf "${C_MOD}◈ %s${R}" "$model_name"
