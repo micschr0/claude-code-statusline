@@ -27,6 +27,7 @@ C_CRIT="${ESC}[38;5;203m"    # red
 C_SEP="${ESC}[38;5;238m"     # dark gray
 C_DIM="${ESC}[38;5;245m"     # muted foreground
 C_RST="${ESC}[38;5;73m"      # muted teal (reset countdown)
+C_EFF_MAX="${ESC}[38;5;213m" # bright magenta (max effort)
 
 # Powerline thin separator (U+E0B3, requires Nerd Font / powerline-patched font)
 PL=$(printf '\xee\x82\xb3')
@@ -34,6 +35,7 @@ SEP=" ${C_SEP}${PL}${R} "
 # Weekly-limit icon (Nerd Font MDI calendar, U+F00ED) — defined as bytes to keep
 # the source ASCII-clean; swap the codepoint to taste.
 WK=$(printf '\xf3\xb0\x83\xad')
+EF=$(printf '\xef\x83\xa7')  # U+F0E7 nf-fa-bolt (effort indicator)
 
 # make_bar <pct> <width>
 make_bar() {
@@ -67,7 +69,7 @@ fmt_reset() {
 # Parse all fields in one jq call — avoids 8 separate forks
 # Delimiter is US (0x1f): non-whitespace, so `read` preserves empty fields, and
 # it cannot occur in a real cwd or model name (unlike "|"), so no field shifting.
-IFS=$'\x1f' read -r cwd s_in s_out used rl_pct resets_at wk_pct wk_resets_at model_name < <(
+IFS=$'\x1f' read -r cwd s_in s_out used rl_pct resets_at wk_pct wk_resets_at model_name effort_level < <(
   echo "$input" | jq -r '[
     (.cwd? // ""),
     ((.context_window?.total_input_tokens?  // 0) | (tonumber? // 0) | floor | tostring),
@@ -77,7 +79,8 @@ IFS=$'\x1f' read -r cwd s_in s_out used rl_pct resets_at wk_pct wk_resets_at mod
     ((.rate_limits?.five_hour?.resets_at?   // 0) | (tonumber? // 0) | floor | tostring),
     ((.rate_limits?.seven_day?.used_percentage? // "") | (tonumber? // "") | tostring),
     ((.rate_limits?.seven_day?.resets_at?   // 0) | (tonumber? // 0) | floor | tostring),
-    (.model?.display_name? // "")
+    (.model?.display_name? // ""),
+    (.effort?.level? // "")
   ] | join("\u001f")' 2>/dev/null
 )
 
@@ -176,8 +179,23 @@ if [ -n "$rl_pct" ] || [ "${resets_at:-0}" -gt 0 ] 2>/dev/null \
   fi
 fi
 
-# ── Model (trailing — low-volatility metadata) ────────────────────────────────
+# ── Model + Effort (trailing — low-volatility metadata) ──────────────────────
 model_name=${model_name//[$CTRL]/}   # strip terminal-control bytes (ANSI/OSC injection guard)
-[ -n "$model_name" ] && printf "${SEP}${C_MOD}◈ %s${R}" "$model_name"
+if [ -n "$model_name" ] || [ -n "$effort_level" ]; then
+  printf '%s' "$SEP"
+  [ -n "$model_name" ] && printf "${C_MOD}◈ %s${R}" "$model_name"
+  if [ -n "$effort_level" ]; then
+    case "$effort_level" in
+      low)    ec="$C_DIM"     ;;
+      medium) ec="$C_DIM"     ;;
+      high)   ec="$C_OK"      ;;
+      xhigh)  ec="$C_WARN"    ;;
+      max)    ec="$C_EFF_MAX" ;;
+      *)      ec="$C_DIM"     ;;
+    esac
+    [ -n "$model_name" ] && printf ' '
+    printf "${C_DIM}${EF} ${ec}%s${R}" "$effort_level"
+  fi
+fi
 
 exit 0
