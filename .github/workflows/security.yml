@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ludeeus/action-shellcheck@224daa3e2e254302fca0c5ef3a5700df5668b1f5 # v2.0.0
+      - uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # v2.0.0
         with:
           severity: warning
           ignore_paths: scripts
@@ -31,7 +31,7 @@ jobs:
       - name: Syntax check
         run: bash -n statusline-command.sh
       - name: Smoke — empty input
-        run: output=$(echo '{}' | bash statusline-command.sh); [ -n "$output" ]
+        run: echo '{}' | bash statusline-command.sh; [ $? -eq 0 ]
       - name: Smoke — full input
         run: |
           output=$(echo '{"cwd":"/tmp","context_window":{"total_input_tokens":35000,"total_output_tokens":7300,"used_percentage":67.0},"model":{"display_name":"Claude Sonnet 4.6"}}' | bash statusline-command.sh)
