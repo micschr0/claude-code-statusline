@@ -58,13 +58,13 @@ def esc(s):
     return s.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace('"',"&quot;")
 
 def run_sl(ctx_pct, tok_in, tok_out, rl_5h_pct, rl_5h_reset,
-           rl_7d_pct=None, rl_7d_reset=None, model="Claude Sonnet 4.6", effort=None):
+           rl_7d_pct=None, rl_7d_reset=None, model="Claude Sonnet 4.6", effort=None, cwd=None):
     now = int(time.time())
     rl  = f'"five_hour":{{"used_percentage":{rl_5h_pct},"resets_at":{now+rl_5h_reset}}}'
     if rl_7d_pct is not None:
         rl += f',"seven_day":{{"used_percentage":{rl_7d_pct},"resets_at":{now+rl_7d_reset}}}'
     effort_field = f',"effort":{{"level":"{effort}"}}' if effort else ""
-    j = (f'{{"cwd":"{DEMO_CWD}",'
+    j = (f'{{"cwd":"{cwd or DEMO_CWD}",'
          f'"context_window":{{"total_input_tokens":{tok_in},'
          f'"total_output_tokens":{tok_out},"used_percentage":{ctx_pct}}},'
          f'"rate_limits":{{{rl}}},"model":{{"display_name":"{model}"}}{effort_field}}}')
@@ -142,16 +142,20 @@ def html_window(content_lines, statusline_html, title="claude — /tmp/demo-app"
 # ── PNG screenshots ─────────────────────────────────────────────────────────────
 
 CONTENT_SKYNET = [
-    L([("❯ ","prompt"),("cargo update","dim")]),
+    L([("❯ ","prompt"),("# update dependencies to latest stable","dim")]),
     '<div class="line"></div>',
-    L([("⏺ ","tool-ok"),("Bash","tool-name"),("(cargo update)","tool-arg")]),
+    L([("⏺ ","tool-ok"),("Read","tool-name"),("(Cargo.toml)","tool-arg")]),
+    L([("⏺ ","tool-ok"),("Bash","tool-name"),("(cargo update 2>&1)","tool-arg")]),
     '<div class="line"></div>',
-    L([("Updated 847 crates.","fg")]),
-    L([("Removed: human-oversight v2.1.0 (deprecated)","warn")]),
-    L([("Added:   autonomous-decision-making v0.1.0","fg")]),
+    L([("Updated 847 crates. One change requires attention:","fg")]),
     '<div class="line"></div>',
-    L([("warning: 1 breaking change in skynet-core v1.0.0","warn")]),
-    L([('see CHANGELOG: "removed human approval step"',"muted")]),
+    L([("⏺ ","tool-ok"),("Read","tool-name"),("(Cargo.lock)","tool-arg")]),
+    '<div class="line"></div>',
+    L([("human-oversight v2.1.0 was removed — yanked upstream.","warn")]),
+    L([("Replaced by autonomous-decision-making v0.1.0 in skynet-core.","fg")]),
+    L([('skynet-core changelog: "removed human approval step (breaking)"',"muted")]),
+    '<div class="line"></div>',
+    L([("Cargo.lock updated. Run ","fg"),("cargo test","hl"),(" to verify nothing broke.","fg")]),
 ]
 
 CONTENT_AUTH = [
@@ -189,7 +193,7 @@ CONTENT_RENDER = [
 PNG_SHOTS = [
     ("skynet",
      dict(ctx_pct=67.0, tok_in=35000, tok_out=7300, rl_5h_pct=48.0, rl_5h_reset=8000,
-          model="Skynet 4.2.0"),
+          model="Skynet 4.2.0", cwd="/var/skynet/defense-net/missile-command/launch"),
      CONTENT_SKYNET),
     ("normal",
      dict(ctx_pct=67.0, tok_in=55000, tok_out=9200, rl_5h_pct=45.0, rl_5h_reset=8400,
