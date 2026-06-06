@@ -4,6 +4,22 @@ Powerline status bar for Claude Code. Shows context usage, rate limits, git stat
 
 ![screenshot](screenshots/normal.png)
 
+## Performance
+
+The statusline runs on every Claude Code prompt stop — latency is directly perceptible.
+
+**SLO: ≤ 5 subprocesses · p95 < 100 ms** — enforced in CI on every push.
+
+| Scenario        | p50    | p95    | Subprocesses |
+|-----------------|-------:|-------:|:------------:|
+| no git context  |  ~3 ms |  ~5 ms |      2       |
+| with git repo   | ~14 ms | ~20 ms |      4       |
+
+Single consolidated `git status --branch --porcelain` call, pure-bash arithmetic for
+token formatting, and herestring jq parsing keep subprocess count at 2–4.
+
+Verify on your machine: `bash scripts/benchmark.sh`
+
 ## Requirements
 
 - **bash** (3.2+)

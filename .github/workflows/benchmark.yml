@@ -1,0 +1,29 @@
+name: Benchmark
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  benchmark:
+    name: Performance SLO
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Run benchmark (SLO check)
+        run: bash scripts/benchmark.sh | tee benchmark-report.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-report
+          path: benchmark-report.txt
