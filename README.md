@@ -2,9 +2,12 @@
 
 A statusline for Claude Code — context usage, rate limits, and git state on every turn.
 
-![screenshot](screenshots/normal.png)
+<img src="screenshots/normal.png" width="745" alt="screenshot">
 
-**Requirements:** [Nerd Font](https://www.nerdfonts.com/) · bash 3.2+ · jq · git
+**Requirements:**
+- [Nerd Font](https://www.nerdfonts.com/) — for the Powerline separator and status icon glyphs
+- [jq](https://jqlang.org/) — reads context usage, rate limits, and model from Claude Code's session JSON
+- [git](https://git-scm.com/) — reads branch, ahead/behind, and modified-file counts
 
 ## Install
 
@@ -49,9 +52,9 @@ Re-run the install command. Updates take effect on the next turn.
 
 ## Screenshots
 
-![Critical and weekly rate limit](screenshots/critical.png)
+<img src="screenshots/critical.png" width="745" alt="Critical and weekly rate limit">
 
-![Over context limit](screenshots/overlimit.png)
+<img src="screenshots/overlimit.png" width="745" alt="Over context limit">
 
 ## License
 
