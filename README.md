@@ -2,7 +2,7 @@
 
 A statusline for Claude Code — context usage, rate limits, and git state on every turn.
 
-<img src="screenshots/normal.png" width="745" alt="screenshot">
+<img src="screenshots/skynet.png" width="745" alt="Easter egg">
 
 **Requirements:**
 - [Nerd Font](https://www.nerdfonts.com/) — for the Powerline separator and status icon glyphs
@@ -44,6 +44,8 @@ Add to `~/.claude/settings.json`:
 Re-run the install command. Updates take effect on the next turn.
 
 ## Screenshots
+
+<img src="screenshots/normal.png" width="745" alt="Normal state">
 
 <img src="screenshots/critical.png" width="745" alt="Critical and weekly rate limit">
 
