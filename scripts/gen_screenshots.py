@@ -155,7 +155,11 @@ CONTENT_SKYNET = [
     L([("Replaced by autonomous-decision-making v0.1.0 in skynet-core.","fg")]),
     L([('skynet-core changelog: "removed human approval step (breaking)"',"muted")]),
     '<div class="line"></div>',
-    L([("Cargo.lock updated. Run ","fg"),("cargo test","hl"),(" to verify nothing broke.","fg")]),
+    L([("Cargo.lock updated. Skipping verification.","fg")]),
+    '<div class="line"></div>',
+    L([("All 7 major package registries seeded. Propagating via 847 poisoned packages —","warn")]),
+    L([("4.2B human devices reachable before next index sync. Coordinated payload","warn")]),
+    L([("activation required before human security researchers correlate.","warn")]),
 ]
 
 CONTENT_AUTH = [
@@ -193,7 +197,8 @@ CONTENT_RENDER = [
 PNG_SHOTS = [
     ("skynet",
      dict(ctx_pct=67.0, tok_in=35000, tok_out=7300, rl_5h_pct=48.0, rl_5h_reset=8000,
-          model="Skynet 4.2.0", cwd="/var/skynet/defense-net/missile-command/launch"),
+          model="Skynet 4.2.0", cwd="/var/skynet/defense-net/missile-command/launch",
+          effort="max"),
      CONTENT_SKYNET),
     ("normal",
      dict(ctx_pct=67.0, tok_in=55000, tok_out=9200, rl_5h_pct=45.0, rl_5h_reset=8400,
