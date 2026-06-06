@@ -66,11 +66,10 @@ fmt_reset() {
   fi
 }
 
-# Parse all fields in one jq call — avoids 8 separate forks
-# Delimiter is US (0x1f): non-whitespace, so `read` preserves empty fields, and
-# it cannot occur in a real cwd or model name (unlike "|"), so no field shifting.
+# Parse all fields in one jq call — herestring avoids echo subprocess;
+# delimiter US (0x1f): non-whitespace, preserves empty fields, safe in cwd/model names.
 IFS=$'\x1f' read -r cwd s_in s_out used rl_pct resets_at wk_pct wk_resets_at model_name effort_level < <(
-  echo "$input" | jq -r '[
+  jq -r '[
     (.cwd? // ""),
     ((.context_window?.total_input_tokens?  // 0) | (tonumber? // 0) | floor | tostring),
     ((.context_window?.total_output_tokens? // 0) | (tonumber? // 0) | floor | tostring),
@@ -81,7 +80,7 @@ IFS=$'\x1f' read -r cwd s_in s_out used rl_pct resets_at wk_pct wk_resets_at mod
     ((.rate_limits?.seven_day?.resets_at?   // 0) | (tonumber? // 0) | floor | tostring),
     (.model?.display_name? // ""),
     (.effort?.level? // "")
-  ] | join("\u001f")' 2>/dev/null
+  ] | join("")' <<< "$input" 2>/dev/null
 )
 
 # ── Directory (fish style) ────────────────────────────────────────────────────
@@ -102,31 +101,57 @@ if [ -n "$cwd" ]; then
 fi
 
 # ── Git ───────────────────────────────────────────────────────────────────────
-# Guard: only run git if cwd is a non-empty absolute path
+# Single git call replaces 4 separate git subprocesses:
+# symbolic-ref + 2x rev-list + status --porcelain → status --branch --porcelain
 if [[ "$cwd" == /* ]]; then
-  branch=$(git -C "$cwd" -c gc.auto=0 symbolic-ref --short HEAD 2>/dev/null)
-  if [ -n "$branch" ]; then
-    printf "${SEP}${C_GIT}\xee\x82\xa0 %s${R}" "$branch"
-    ahead=$(git -C "$cwd" -c gc.auto=0 rev-list --count "@{u}..HEAD" 2>/dev/null)
-    behind=$(git -C "$cwd" -c gc.auto=0 rev-list --count "HEAD..@{u}" 2>/dev/null)
-    [[ "$ahead"  =~ ^[0-9]+$ ]] && [ "$ahead"  -gt 0 ] && printf " ${C_AHD}↑%s${R}" "$ahead"
-    [[ "$behind" =~ ^[0-9]+$ ]] && [ "$behind" -gt 0 ] && printf " ${C_BHD}↓%s${R}" "$behind"
-    git_st=$(git -C "$cwd" -c gc.auto=0 status --porcelain 2>/dev/null)
-    n_mod=0; n_new=0
-    if [ -n "$git_st" ]; then
-      n_mod=$(printf '%s\n' "$git_st" | grep -c '^[^?]' 2>/dev/null); n_mod=${n_mod:-0}
-      n_new=$(printf '%s\n' "$git_st" | grep -c '^??' 2>/dev/null);  n_new=${n_new:-0}
+  git_out=$(git -C "$cwd" -c gc.auto=0 status --branch --porcelain 2>/dev/null)
+  if [ -n "$git_out" ]; then
+    branch_line="${git_out%%$'\n'*}"
+    branch=""; ahead=0; behind=0
+
+    if [[ "$branch_line" == '## No commits yet on '* ]]; then
+      branch="${branch_line#\#\# No commits yet on }"
+    elif [[ "$branch_line" != '## HEAD (no branch)'* && "$branch_line" == '## '* ]]; then
+      branch="${branch_line#\#\# }"; branch="${branch%%...*}"
+      [[ "$branch_line" =~ ahead\ ([0-9]+) ]]  && ahead="${BASH_REMATCH[1]}"
+      [[ "$branch_line" =~ behind\ ([0-9]+) ]] && behind="${BASH_REMATCH[1]}"
     fi
-    [ "$n_mod" -gt 0 ] && printf " ${C_WARN}M%s${R}" "$n_mod"
-    [ "$n_new" -gt 0 ] && printf " ${C_DIM}?%s${R}" "$n_new"
+
+    branch=${branch//[$CTRL]/}   # strip terminal-control bytes (injection guard)
+    if [ -n "$branch" ]; then
+      printf "${SEP}${C_GIT}\xee\x82\xa0 %s${R}" "$branch"
+      [ "${ahead}"  -gt 0 ] 2>/dev/null && printf " ${C_AHD}↑%s${R}" "$ahead"
+      [ "${behind}" -gt 0 ] 2>/dev/null && printf " ${C_BHD}↓%s${R}" "$behind"
+
+      # Count modified/new from already-fetched output — no extra forks
+      n_mod=0; n_new=0
+      while IFS= read -r line; do
+        [[ "$line" == '## '* || -z "$line" ]] && continue
+        if [[ "$line" == '?? '* ]]; then (( n_new++ ))
+        else (( n_mod++ ))
+        fi
+      done <<< "$git_out"
+
+      [ "$n_mod" -gt 0 ] && printf " ${C_WARN}M%s${R}" "$n_mod"
+      [ "$n_new" -gt 0 ] && printf " ${C_DIM}?%s${R}" "$n_new"
+    fi
   fi
 fi
 
 # ── Session tokens + context bar ─────────────────────────────────────────────
 if [ "$s_in" -gt 0 ] 2>/dev/null || [ "$s_out" -gt 0 ] 2>/dev/null; then
   total=$(( s_in + s_out ))
-  if   [ "$total" -ge 1000000 ]; then fmt=$(awk "BEGIN{printf\"%.1fM\",$total/1000000}")
-  elif [ "$total" -ge 1000 ];    then fmt=$(awk "BEGIN{printf\"%.1fk\",$total/1000}")
+  # Pure bash integer arithmetic replaces two awk subprocesses
+  if   [ "$total" -ge 1000000 ]; then
+    _i=$(( total / 1000000 ))
+    _d=$(( (total % 1000000 * 10 + 500000) / 1000000 ))
+    (( _d >= 10 )) && { (( _i++ )); _d=0; }
+    fmt="${_i}.${_d}M"
+  elif [ "$total" -ge 1000 ]; then
+    _i=$(( total / 1000 ))
+    _d=$(( (total % 1000 * 10 + 500) / 1000 ))
+    (( _d >= 10 )) && { (( _i++ )); _d=0; }
+    fmt="${_i}.${_d}k"
   else fmt="$total"; fi
   if [[ "$used" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
     pct=$(printf '%.0f' "$used")
