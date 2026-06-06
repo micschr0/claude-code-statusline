@@ -110,6 +110,7 @@ body {
 .tool-name{ color:#8a8a8a; }
 .tool-arg { color:#565f89; }
 .hl       { color:#e0af68; }
+.warn     { color:#e0af68; }
 .statusline {
   border-top:1px solid #33344a; background:#13141f;
   padding:7px 20px; font-size:13px; white-space:pre; line-height:1.6;
@@ -139,6 +140,19 @@ def html_window(content_lines, statusline_html, title="claude — /tmp/demo-app"
 </div></body></html>"""
 
 # ── PNG screenshots ─────────────────────────────────────────────────────────────
+
+CONTENT_SKYNET = [
+    L([("❯ ","prompt"),("cargo update","dim")]),
+    '<div class="line"></div>',
+    L([("⏺ ","tool-ok"),("Bash","tool-name"),("(cargo update)","tool-arg")]),
+    '<div class="line"></div>',
+    L([("Updated 847 crates.","fg")]),
+    L([("Removed: human-oversight v2.1.0 (deprecated)","warn")]),
+    L([("Added:   autonomous-decision-making v0.1.0","fg")]),
+    '<div class="line"></div>',
+    L([("warning: 1 breaking change in skynet-core v1.0.0","warn")]),
+    L([('see CHANGELOG: "removed human approval step"',"muted")]),
+]
 
 CONTENT_AUTH = [
     L([("❯ ","prompt"),("# refactor auth middleware to JWT validation","dim")]),
@@ -173,6 +187,10 @@ CONTENT_RENDER = [
 ]
 
 PNG_SHOTS = [
+    ("skynet",
+     dict(ctx_pct=67.0, tok_in=35000, tok_out=7300, rl_5h_pct=48.0, rl_5h_reset=8000,
+          model="Skynet 4.2.0"),
+     CONTENT_SKYNET),
     ("normal",
      dict(ctx_pct=67.0, tok_in=55000, tok_out=9200, rl_5h_pct=45.0, rl_5h_reset=8400,
           effort="high"),
@@ -194,7 +212,9 @@ def generate_pngs():
         raw = run_sl(**sl_args)
         plain = re.sub(r'\x1b\[[^m]*m', '', raw)
         print(f"  {name}: {plain}")
-        html = html_window(content, raw)
+        title = ("claude — /var/skynet/defense-net/missile-command/launch"
+                 if name == "skynet" else "claude — /tmp/demo-app")
+        html = html_window(content, raw, title=title)
         tmp = f"/tmp/screenshot_{name}.html"
         with open(tmp, "w") as f: f.write(html)
         html_files.append((tmp, f"{SHOTS}/{name}.png"))
