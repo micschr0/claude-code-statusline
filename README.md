@@ -15,7 +15,7 @@ A statusline for Claude Code — context usage, rate limits, and git state on ev
 curl -fsSL https://raw.githubusercontent.com/micschr0/claude-code-statusline/main/install.sh | bash
 ```
 
-Restart Claude Code. If glyphs show as boxes, install a Nerd Font and set it as your terminal font. macOS Terminal does not support Nerd Font PUA glyphs — use iTerm2, Kitty, WezTerm, Ghostty, or Alacritty.
+Restart Claude Code. If the statusline is blank, verify `~/.claude/settings.json` contains `"statusLine": {"type": "command", ...}`. If glyphs show as boxes, install a Nerd Font — macOS Terminal does not support Nerd Font PUA glyphs, use iTerm2, Kitty, WezTerm, Ghostty, or Alacritty.
 
 <details>
 <summary>Manual install</summary>
@@ -42,13 +42,6 @@ Add to `~/.claude/settings.json`:
 ## Updates
 
 Re-run the install command. Updates take effect on the next turn.
-
-## Troubleshooting
-
-- **Blank statusline:** Verify `~/.claude/settings.json` contains `"statusLine": {"type": "command", ...}`.
-- **Boxes instead of glyphs:** Install a [Nerd Font](https://www.nerdfonts.com/). macOS Terminal does not support these glyphs — use iTerm2, Kitty, WezTerm, Ghostty, or Alacritty.
-- **`jq: command not found`:** `brew install jq` / `apt install jq`
-- **Wrong version:** `md5sum ~/.claude/statusline-command.sh 2>/dev/null || md5 -r ~/.claude/statusline-command.sh`
 
 ## Screenshots
 
