@@ -45,7 +45,11 @@ Re-run the install command. Updates take effect on the next turn.
 
 ## Screenshots
 
-**Normal** — context, 5-hour rate limit, and git state, all healthy:
+**Calm** — low context and rate-limit usage, everything green:
+
+<img src="screenshots/strip-green.png" width="860" alt="Calm state, all green">
+
+**Normal** — context, 5-hour rate limit, and git state, working along:
 
 <img src="screenshots/strip-normal.png" width="860" alt="Normal state">
 
@@ -56,6 +60,14 @@ Re-run the install command. Updates take effect on the next turn.
 **Over limit** — past 100% context, both bars red:
 
 <img src="screenshots/strip-overlimit.png" width="860" alt="Over context limit">
+
+**Outside a git repo** — the git segment simply drops out:
+
+<img src="screenshots/strip-nogit.png" width="860" alt="Outside a git repository">
+
+**Model without an effort parameter** — the effort indicator drops out:
+
+<img src="screenshots/strip-noeffort.png" width="860" alt="Model without effort indicator">
 
 ## License
 

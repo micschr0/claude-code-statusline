@@ -298,8 +298,23 @@ body { background:transparent; }
 }
 """
 
-# Reuse the PNG state definitions so strips and full shots never drift apart.
-STRIP_SHOTS = [(n, a) for n, a, _ in PNG_SHOTS if n != "skynet"]
+# Reuse the PNG state definitions so strips and full shots never drift apart…
+_PNG_STRIPS = [(n, a) for n, a, _ in PNG_SHOTS if n != "skynet"]
+
+# …plus strip-only states that have no full-terminal counterpart: behaviours
+# the full shots don't cover (calm green baseline, no git repo, no effort param).
+_EXTRA_STRIPS = [
+    ("green", dict(ctx_pct=18.0, tok_in=9000, tok_out=2000,
+                   rl_5h_pct=12.0, rl_5h_reset=14400, effort="medium")),
+    ("nogit", dict(ctx_pct=48.0, tok_in=40000, tok_out=8000,
+                   rl_5h_pct=30.0, rl_5h_reset=9000,
+                   model="Claude Opus 4.8", effort="high", cwd="/tmp")),
+    ("noeffort", dict(ctx_pct=55.0, tok_in=50000, tok_out=9000,
+                      rl_5h_pct=40.0, rl_5h_reset=7200,
+                      model="Claude Haiku 4.5")),
+]
+
+STRIP_SHOTS = _PNG_STRIPS + _EXTRA_STRIPS
 
 def strip_html(sl_raw):
     spans = "".join(f'<span style="color:{c}">{esc(t)}</span>'
