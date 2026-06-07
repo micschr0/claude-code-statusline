@@ -32,26 +32,31 @@ C_DIM="${ESC}[38;5;245m"     # muted foreground
 C_RST="${ESC}[38;5;73m"      # muted teal (reset countdown)
 C_EFF_MAX="${ESC}[38;5;213m" # bright magenta (max effort)
 
-# Powerline thin separator (U+E0B3, requires Nerd Font / powerline-patched font)
-PL=$(printf '\xee\x82\xb3')
+# Powerline thin separator (U+E0B1 — right-pointing chevron, matches L→R segment
+# flow; requires Nerd Font / powerline-patched font)
+PL=$(printf '\xee\x82\xb1')
 SEP=" ${C_SEP}${PL}${R} "
 # Weekly-limit icon (Nerd Font MDI calendar, U+F00ED) — defined as bytes to keep
 # the source ASCII-clean; swap the codepoint to taste.
 WK=$(printf '\xf3\xb0\x83\xad')
 EF=$(printf '\xef\x83\xa7')  # U+F0E7 nf-fa-bolt (effort indicator)
 
-# make_bar <pct> <width>
+# make_bar <pct> <width> <fill-color>
+# Emits a self-colored bar: filled run in <fill-color>, empty track dimmed in
+# C_SEP, terminated with reset — so the fill level reads at a glance instead of
+# the whole bar being one flat color.
 make_bar() {
-  local pct=$1 width=${2:-6}
+  local pct=$1 width=${2:-6} fill=$3
   local filled=$(( pct * width / 100 ))
   (( filled > width )) && filled=$width
   # ensure at least 1 filled char when pct > 0 (avoids indistinguishable zero-state)
   (( pct > 0 && filled == 0 )) && filled=1
   local empty=$(( width - filled ))
-  local bar=""
+  local bar="$fill"
   for (( i=0; i<filled; i++ )); do bar="${bar}━"; done
+  bar="${bar}${C_SEP}"
   for (( i=0; i<empty;  i++ )); do bar="${bar}╌"; done
-  printf '%s\n' "$bar"
+  printf '%s\n' "${bar}${R}"
 }
 
 # fmt_reset <epoch> — adaptive time until reset (Nd Nh / Nh Nm / Nm Ns / Ns);
@@ -164,8 +169,8 @@ if [ "$s_in" -gt 0 ] 2>/dev/null || [ "$s_out" -gt 0 ] 2>/dev/null; then
       elif [ "$pct" -ge 80 ];  then cc="$C_CRIT"
       elif [ "$pct" -ge 50 ];  then cc="$C_WARN"
       else cc="$C_OK"; fi
-      bar=$(make_bar "$pct" 6)
-      printf "${SEP}${C_DIM}󰍛 ${cc}%s %d%%${R} ${C_TOK}⬡ %s${R}" "$bar" "$pct" "$fmt"
+      bar=$(make_bar "$pct" 6 "$cc")
+      printf "${SEP}${C_DIM}󰍛 %s ${cc}%d%%${R} ${C_TOK}⬡ %s${R}" "$bar" "$pct" "$fmt"
     else
       printf "${SEP}${C_TOK}⬡ %s${R}" "$fmt"
     fi
@@ -190,8 +195,8 @@ if [ -n "$rl_pct" ] || [ "${resets_at:-0}" -gt 0 ] 2>/dev/null \
         if   [ "$rl_int" -ge 80 ]; then rlc="$C_CRIT"
         elif [ "$rl_int" -ge 50 ]; then rlc="$C_WARN"
         else rlc="$C_OK"; fi
-        bar=$(make_bar "$rl_int" 6)
-        printf "${C_DIM}󰔟 ${rlc}%s %d%%${R}" "$bar" "$rl_int"
+        bar=$(make_bar "$rl_int" 6 "$rlc")
+        printf "${C_DIM}󰔟 %s ${rlc}%d%%${R}" "$bar" "$rl_int"
       fi
     fi
     rrem=$(fmt_reset "$resets_at")
@@ -203,8 +208,8 @@ if [ -n "$rl_pct" ] || [ "${resets_at:-0}" -gt 0 ] 2>/dev/null \
     wk_int=$(printf '%.0f' "$wk_pct")
     if [ "$wk_int" -ge 50 ] && [ "$wk_int" -le 999 ] 2>/dev/null; then
       if [ "$wk_int" -ge 80 ]; then wkc="$C_CRIT"; else wkc="$C_WARN"; fi
-      bar=$(make_bar "$wk_int" 6)
-      printf "${SEP}${C_DIM}${WK} ${wkc}%s %d%%${R}" "$bar" "$wk_int"
+      bar=$(make_bar "$wk_int" 6 "$wkc")
+      printf "${SEP}${C_DIM}${WK} %s ${wkc}%d%%${R}" "$bar" "$wk_int"
       wrem=$(fmt_reset "$wk_resets_at")
       [ -n "$wrem" ] && printf " ${C_DIM}↺${R} ${C_RST}%s${R}" "$wrem"
     fi
