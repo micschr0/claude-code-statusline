@@ -240,12 +240,15 @@ def generate_pngs():
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   }});
   for (const {{ src, out }} of [{shots_js}]) {{
-    const page = await browser.newPage();
-    await page.setViewportSize({{ width: 1260, height: 800 }});
+    const page = await browser.newPage({{
+      deviceScaleFactor: 2,
+      viewport: {{ width: 1260, height: 900 }}
+    }});
     await page.goto(src);
-    await page.waitForTimeout(1500);
-    const h = await page.evaluate(() => document.body.scrollHeight);
-    await page.screenshot({{ path: out, clip: {{ x:0, y:0, width:1200, height:h }} }});
+    await page.waitForTimeout(1200);
+    // Screenshot the window element itself — symmetric, both rounded corners
+    // intact, transparent outside the radius (no fixed clip to slice the edge).
+    await page.locator(".window").screenshot({{ path: out, omitBackground: true }});
     await page.close();
     console.log("Saved:", out);
   }}
