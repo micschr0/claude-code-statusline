@@ -2,7 +2,7 @@
 
 A statusline for Claude Code — context usage, rate limits, and git state on every turn.
 
-<img src="screenshots/skynet.png" width="745" alt="Easter egg">
+<img src="screenshots/skynet.png" width="860" alt="Easter egg">
 
 **Requirements:**
 - [Nerd Font](https://www.nerdfonts.com/) — for the Powerline separator and status icon glyphs
@@ -45,11 +45,17 @@ Re-run the install command. Updates take effect on the next turn.
 
 ## Screenshots
 
-<img src="screenshots/normal.png" width="745" alt="Normal state">
+**Normal** — context, 5-hour rate limit, and git state, all healthy:
 
-<img src="screenshots/critical.png" width="745" alt="Critical and weekly rate limit">
+<img src="screenshots/strip-normal.png" width="860" alt="Normal state">
 
-<img src="screenshots/overlimit.png" width="745" alt="Over context limit">
+**Critical** — context filling up, 5-hour limit tight, weekly window now shown:
+
+<img src="screenshots/strip-critical.png" width="860" alt="Critical state with weekly rate limit">
+
+**Over limit** — past 100% context, both bars red:
+
+<img src="screenshots/strip-overlimit.png" width="860" alt="Over context limit">
 
 ## License
 

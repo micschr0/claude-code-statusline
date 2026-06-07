@@ -2,9 +2,10 @@
 """Generate all README screenshots.
 
 Usage:
-  python3 scripts/gen_screenshots.py        # PNG (via Docker) + animated SVG
-  python3 scripts/gen_screenshots.py --png  # PNG only
-  python3 scripts/gen_screenshots.py --svg  # animated SVG only (no Docker needed)
+  python3 scripts/gen_screenshots.py          # full PNGs + strips (Docker) + SVG
+  python3 scripts/gen_screenshots.py --png     # full terminal PNGs only
+  python3 scripts/gen_screenshots.py --strips  # compact statusline-only strips only
+  python3 scripts/gen_screenshots.py --svg     # animated SVG only (no Docker needed)
 
 Prerequisites for PNG:
   - Docker socket at /run/user/1002/docker.sock
@@ -271,6 +272,87 @@ def generate_pngs():
     else:
         print("  Done.")
 
+# ── Statusline strips (compact, README-friendly) ─────────────────────────────────
+# Just the bar in a self-contained rounded card — no terminal chrome, no fake
+# conversation. Transparent rounded corners (omitBackground) so it sits cleanly
+# on GitHub's light OR dark README background.
+
+STRIP_CSS = """
+@font-face {
+  font-family:'HackNF';
+  src:url('/fonts/HackNerdFontMono-Regular.ttf') format('truetype');
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:transparent; }
+.strip {
+  display:inline-block;
+  background:#13141f;
+  border:1px solid #2a2b3d;
+  border-radius:8px;
+  padding:9px 18px;
+  font-family:'HackNF',monospace; font-size:14px; line-height:1.5;
+  white-space:pre; color:#a9b1d6;
+}
+"""
+
+# Reuse the PNG state definitions so strips and full shots never drift apart.
+STRIP_SHOTS = [(n, a) for n, a, _ in PNG_SHOTS if n != "skynet"]
+
+def strip_html(sl_raw):
+    spans = "".join(f'<span style="color:{c}">{esc(t)}</span>'
+                    for c, t in parse_ansi(sl_raw))
+    return (f'<!DOCTYPE html><html><head><meta charset="utf-8">'
+            f'<style>{STRIP_CSS}</style></head>'
+            f'<body><div class="strip">{spans}</div></body></html>')
+
+def generate_strips():
+    print("── Statusline strips ────────────────────────────")
+    html_files = []
+    for name, sl_args in STRIP_SHOTS:
+        raw = run_sl(**sl_args)
+        plain = re.sub(r'\x1b\[[^m]*m', '', raw)
+        print(f"  {name}: {plain}")
+        tmp = f"/tmp/strip_{name}.html"
+        with open(tmp, "w") as f: f.write(strip_html(raw))
+        html_files.append((tmp, f"{SHOTS}/strip-{name}.png"))
+
+    shots_js = ",\n    ".join(
+        f'{{ src: "file://{src}", out: "{dst}" }}' for src, dst in html_files
+    )
+    pw_script = f"""const {{ chromium }} = require("/node_modules/playwright-core");
+(async () => {{
+  const browser = await chromium.launch({{
+    executablePath: "{CHROMIUM}",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  }});
+  for (const {{ src, out }} of [{shots_js}]) {{
+    const page = await browser.newPage({{ deviceScaleFactor: 2 }});
+    await page.goto(src);
+    await page.waitForTimeout(800);
+    await page.locator(".strip").screenshot({{ path: out, omitBackground: true }});
+    await page.close();
+    console.log("Saved:", out);
+  }}
+  await browser.close();
+}})().catch(e => {{ console.error(e.message); process.exit(1); }});
+"""
+    pw_path = "/tmp/take_strips.js"
+    with open(pw_path, "w") as f: f.write(pw_script)
+
+    print("\n  Running Docker...")
+    result = subprocess.run([
+        "docker", "run", "--rm",
+        "-v", f"{REPO}:{REPO}",
+        "-v", "/tmp:/tmp",
+        "-v", f"{PW_MODULES}:/node_modules",
+        "-v", f"{NF_FONT_DIR}:/fonts",
+        "--ipc=host",
+        PLAYWRIGHT,
+        "node", pw_path,
+    ], env={**os.environ, "DOCKER_HOST": DOCKER_SOCK},
+       capture_output=False)
+    print("  Done." if result.returncode == 0 else "  Docker run failed.")
+
 # ── Animated SVG ───────────────────────────────────────────────────────────────
 
 SVG_W, SVG_LH = 820, 21
@@ -374,5 +456,7 @@ def generate_svg():
 os.makedirs(SHOTS, exist_ok=True)
 if MODE in ("all", "--png"):
     generate_pngs()
+if MODE in ("all", "--strips"):
+    generate_strips()
 if MODE in ("all", "--svg"):
     generate_svg()
