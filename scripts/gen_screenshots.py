@@ -13,7 +13,9 @@ Prerequisites for PNG:
       curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Hack.tar.xz | tar -xf - -C /tmp/fonts
   - playwright-core: /tmp/pw/node_modules
       mkdir -p /tmp/pw && cd /tmp/pw && npm install --prefix . playwright
-  - Demo git repo: /tmp/demo-app (branch main, ↑2, M1, ?1)
+  - Demo git repos: run `bash scripts/make_demo_repos.sh` first — it creates
+    /tmp/demo-{clean,app,busy,release,behind} in distinct git states so the
+    screenshots show varied git segments instead of an identical one.
 """
 import subprocess, re, time, os, sys
 
@@ -207,11 +209,11 @@ PNG_SHOTS = [
      CONTENT_AUTH),
     ("critical",
      dict(ctx_pct=88.0, tok_in=140000, tok_out=26000, rl_5h_pct=80.0, rl_5h_reset=2700,
-          rl_7d_pct=58.0, rl_7d_reset=259200, effort="max"),
+          rl_7d_pct=58.0, rl_7d_reset=259200, effort="max", cwd="/tmp/demo-busy"),
      CONTENT_RENDER),
     ("overlimit",
      dict(ctx_pct=101.0, tok_in=160000, tok_out=8000, rl_5h_pct=93.0, rl_5h_reset=900,
-          effort="max"),
+          effort="max", cwd="/tmp/demo-release"),
      CONTENT_RENDER),
 ]
 
@@ -289,6 +291,11 @@ STRIP_CSS = """
 body { background:transparent; }
 .strip {
   display:inline-block;
+  /* Uniform card width across every state so they render at the SAME font
+     size when shown at a fixed width in the README. min-width (not width)
+     floors short states to a common width while still growing for any future
+     state longer than this — no text gets clipped. */
+  min-width:1300px;
   background:#13141f;
   border:1px solid #2a2b3d;
   border-radius:8px;
@@ -305,13 +312,14 @@ _PNG_STRIPS = [(n, a) for n, a, _ in PNG_SHOTS if n != "skynet"]
 # the full shots don't cover (calm green baseline, no git repo, no effort param).
 _EXTRA_STRIPS = [
     ("green", dict(ctx_pct=18.0, tok_in=9000, tok_out=2000,
-                   rl_5h_pct=12.0, rl_5h_reset=14400, effort="medium")),
+                   rl_5h_pct=12.0, rl_5h_reset=14400, effort="medium",
+                   cwd="/tmp/demo-clean")),
     ("nogit", dict(ctx_pct=48.0, tok_in=40000, tok_out=8000,
                    rl_5h_pct=30.0, rl_5h_reset=9000,
                    model="Claude Opus 4.8", effort="high", cwd="/tmp")),
     ("noeffort", dict(ctx_pct=55.0, tok_in=50000, tok_out=9000,
                       rl_5h_pct=40.0, rl_5h_reset=7200,
-                      model="Claude Haiku 4.5")),
+                      model="Claude Haiku 4.5", cwd="/tmp/demo-behind")),
 ]
 
 STRIP_SHOTS = _PNG_STRIPS + _EXTRA_STRIPS
