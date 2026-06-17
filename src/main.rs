@@ -1,7 +1,7 @@
 mod cli;
 
-use cli::{Cli, Command};
 use clap::Parser;
+use cli::{Cli, Command};
 use statusline::model::Config;
 use statusline::{render_line, styles, themes, InputData};
 use std::io::Read;
@@ -49,10 +49,7 @@ fn run_render(cli: &Cli) -> ExitCode {
 fn run_config(cli: &Cli) -> ExitCode {
     #[cfg(feature = "tui")]
     {
-        let path = cli
-            .config
-            .clone()
-            .or_else(Config::default_path);
+        let path = cli.config.clone().or_else(Config::default_path);
         match statusline::tui::run(path) {
             Ok(()) => ExitCode::SUCCESS,
             Err(e) => {

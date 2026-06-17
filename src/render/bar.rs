@@ -7,7 +7,14 @@ use crate::model::{Color, RESET};
 /// Build a self-colored bar of `width` cells for `pct` percent.
 ///
 /// `pct` may exceed 100 (over-limit); the filled run is clamped to `width`.
-pub fn make_bar(pct: u32, width: u8, fill: Color, track: Color, fill_ch: char, empty_ch: char) -> String {
+pub fn make_bar(
+    pct: u32,
+    width: u8,
+    fill: Color,
+    track: Color,
+    fill_ch: char,
+    empty_ch: char,
+) -> String {
     let width = width as u32;
     let mut filled = pct.saturating_mul(width) / 100;
     if filled > width {

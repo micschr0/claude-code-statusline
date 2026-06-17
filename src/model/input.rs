@@ -226,10 +226,7 @@ where
                 Ok(Coerce(None))
             }
             fn visit_map<A: de::MapAccess<'de>>(self, mut m: A) -> Result<Self::Value, A::Error> {
-                while m
-                    .next_entry::<de::IgnoredAny, de::IgnoredAny>()?
-                    .is_some()
-                {}
+                while m.next_entry::<de::IgnoredAny, de::IgnoredAny>()?.is_some() {}
                 Ok(Coerce(None))
             }
         }

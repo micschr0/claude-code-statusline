@@ -110,9 +110,7 @@ impl Config {
 
     /// Load from the explicit path if given, else the default path, else default.
     pub fn load_or_default(explicit: Option<&Path>) -> Config {
-        let path = explicit
-            .map(PathBuf::from)
-            .or_else(Config::default_path);
+        let path = explicit.map(PathBuf::from).or_else(Config::default_path);
         match path {
             Some(p) => Config::load(&p).unwrap_or_default(),
             None => Config::default(),
