@@ -16,3 +16,9 @@ __pycache__/
 
 # CI benchmark artifact
 benchmark-report.txt
+
+# Rust build output
+/target
+
+# insta snapshot review leftovers
+*.snap.new
