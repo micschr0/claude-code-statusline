@@ -1,5 +1,11 @@
 # claude-code-statusline
 
+> [!IMPORTANT]
+> **This project is archived and no longer actively maintained.**
+> Its successor is **[claudebar](https://github.com/micschr0/claudebar)** — a Powerline-style
+> statusline for Claude Code, rewritten as a Rust CLI with a TUI configurator, themes, and styles.
+> New development happens there; please use claudebar going forward.
+
 A statusline for Claude Code — context usage, rate limits, git state, and dev context (PR status, worktree, active sub-agent) on every turn.
 
 <img src="screenshots/skynet.png" width="860" alt="Easter egg">
