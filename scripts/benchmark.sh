@@ -94,7 +94,7 @@ for name in minimal typical full; do
   case "$name" in
     minimal) input='{}' ;;
     typical) input='{"cwd":"/home/user/project","context_window":{"total_input_tokens":35000,"total_output_tokens":7300,"used_percentage":67.0},"model":{"display_name":"Claude Sonnet 4.6"}}' ;;
-    full)    input='{"cwd":"/home/user/project","context_window":{"total_input_tokens":350000,"total_output_tokens":73000,"used_percentage":95.0},"rate_limits":{"five_hour":{"used_percentage":72.0,"resets_at":9999999999},"seven_day":{"used_percentage":55.0,"resets_at":9999999999}},"model":{"display_name":"Claude Sonnet 4.6"},"effort":{"level":"high"}}' ;;
+    full)    input='{"cwd":"/home/user/project","context_window":{"total_input_tokens":350000,"total_output_tokens":73000,"used_percentage":95.0},"rate_limits":{"five_hour":{"used_percentage":72.0,"resets_at":9999999999},"seven_day":{"used_percentage":55.0,"resets_at":9999999999}},"model":{"display_name":"Claude Sonnet 4.6"},"effort":{"level":"high"},"pr":{"number":1234,"review_state":"approved"},"worktree":{"name":"feat-login"},"agent":{"name":"security-reviewer"}}' ;;
   esac
   read -r _ p50 p95 procs <<< "$(bench "$name" "$input")"
 

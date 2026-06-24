@@ -1,12 +1,18 @@
 # claude-code-statusline
 
-A statusline for Claude Code — context usage, rate limits, and git state on every turn.
+> [!IMPORTANT]
+> **Archived — this project is no longer maintained.**
+> It lives on as **[claudebar](https://github.com/micschr0/claudebar)**: the same statusline
+> rebuilt as a Rust CLI with a TUI configurator, themes, and styles. Head there for new
+> features, fixes, and support.
+
+A statusline for Claude Code — context usage, rate limits, git state, and dev context (PR status, worktree, active sub-agent) on every turn.
 
 <img src="screenshots/skynet.png" width="860" alt="Easter egg">
 
 **Requirements:**
 - [Nerd Font](https://www.nerdfonts.com/) — for the Powerline separator and status icon glyphs
-- [jq](https://jqlang.org/) — reads context usage, rate limits, and model from Claude Code's session JSON
+- [jq](https://jqlang.org/) — reads context usage, rate limits, model, and dev context (PR / worktree / sub-agent) from Claude Code's session JSON
 - [git](https://git-scm.com/) — reads branch, ahead/behind, and modified-file counts
 
 ## Install
